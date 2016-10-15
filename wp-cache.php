@@ -3,7 +3,7 @@
 Plugin Name: wp-cache
 Plugin URI: http://mnm.uib.es/gallir/wp-cache-2/
 Description: Very fast cache module. It's composed of several modules, this plugin can configure and manage the whole system. Once enabled, go to "Options" and select "WP-Cache".
-Version: 2.1.2
+Version: 2.2
 Author: Ricardo Galli Granada
 Author URI: http://mnm.uib.es/gallir/
 */
@@ -25,6 +25,10 @@ Author URI: http://mnm.uib.es/gallir/
 */
 
 /* Changelog
+	2016-10-15
+		Version 2.2 (agentcobraPatch):
+			- Change old depreced function with actual
+
 	2007-09-21
 		- Version 2.1.2:
 			- Add "Content-type" to "known header" because WP uses both (?).
@@ -179,7 +183,7 @@ if( !@include($wp_cache_config_file) ) {
 include(ABSPATH . 'wp-content/plugins/wp-cache/wp-cache-base.php');
 
 function wp_cache_add_pages() {
-	add_options_page('WP-Cache Manager', 'WP-Cache', 5, __FILE__, 'wp_cache_manager');
+	add_options_page('WP-Cache Manager', 'WP-Cache', 'manage_options', __FILE__, 'wp_cache_manager');
 }
 
 function wp_cache_manager() {
@@ -280,7 +284,7 @@ function wp_cache_edit_max_time () {
 }
 
 function wp_cache_sanitize_value($text, & $array) {
-	$text = wp_specialchars(strip_tags($text));
+	$text = esc_html(strip_tags($text));
 	$array = preg_split("/[\s,]+/", chop($text));
 	$text = var_export($array, true);
 	$text = preg_replace('/[\s]+/', ' ', $text);
@@ -306,7 +310,7 @@ function wp_cache_edit_rejected_ua() {
 	echo '<label for="wp_rejected_user_agent">Rejected UA strings</label>';
 	echo '<textarea name="wp_rejected_user_agent" cols="40" rows="4" style="width: 70%; font-size: 12px;" class="code">';
 	foreach ($cache_rejected_user_agent as $ua) {
-		echo wp_specialchars($ua) . "\n";
+		echo esc_html($ua) . "\n";
 	}
 	echo '</textarea> ';
 	echo '<div class="submit"><input type="submit" value="Save UA strings" /></div>';
@@ -330,7 +334,7 @@ function wp_cache_edit_rejected() {
 	echo '<label for="wp_rejected_uri">Rejected URIs</label>';
 	echo '<textarea name="wp_rejected_uri" cols="40" rows="4" style="width: 70%; font-size: 12px;" class="code">';
 	foreach ($cache_rejected_uri as $file) {
-		echo wp_specialchars($file) . "\n";
+		echo esc_html($file) . "\n";
 	}
 	echo '</textarea> ';
 	echo '<div class="submit"><input type="submit" value="Save strings" /></div>';
@@ -352,7 +356,7 @@ function wp_cache_edit_accepted() {
 	echo '<label for="wp_accepted_files">Accepted files</label>';
 	echo '<textarea name="wp_accepted_files" cols="40" rows="8" style="width: 70%; font-size: 12px;" class="code">';
 	foreach ($cache_acceptable_files as $file) {
-		echo wp_specialchars($file) . "\n";
+		echo esc_html($file) . "\n";
 	}
 	echo '</textarea> ';
 	echo '<div class="submit"><input type="submit" value="Save files" /></div>';
