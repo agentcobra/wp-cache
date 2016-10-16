@@ -6,6 +6,7 @@ Description: Very fast cache module. It's composed of several modules, this plug
 Version: 2.2
 Author: Ricardo Galli Granada
 Author URI: http://mnm.uib.es/gallir/
+License: GPL2
 */
 /*  Copyright 2005-2006  Ricardo Galli Granada  (email : gallir@uib.es)
 
@@ -172,15 +173,15 @@ Author URI: http://mnm.uib.es/gallir/
 */
 
 $wp_cache_config_file = ABSPATH . 'wp-content/wp-cache-config.php';
-$wp_cache_config_file_sample = ABSPATH . 'wp-content/plugins/wp-cache/wp-cache-config-sample.php';
+$wp_cache_config_file_sample = ABSPATH . 'wp-content/plugins/wp-cache/includes/wp-cache-config-sample.php';
 $wp_cache_link = ABSPATH . 'wp-content/advanced-cache.php';
-$wp_cache_file = ABSPATH . 'wp-content/plugins/wp-cache/wp-cache-phase1.php';
+$wp_cache_file = ABSPATH . 'wp-content/plugins/wp-cache/includes/wp-cache-phase1.php';
 
 
 if( !@include($wp_cache_config_file) ) {
 	@include($wp_cache_config_file_sample);
 }
-include(ABSPATH . 'wp-content/plugins/wp-cache/wp-cache-base.php');
+include(ABSPATH . 'wp-content/plugins/wp-cache/includes/wp-cache-base.php');
 
 function wp_cache_add_pages() {
 	add_options_page('WP-Cache Manager', 'WP-Cache', 'manage_options', __FILE__, 'wp_cache_manager');
@@ -198,7 +199,7 @@ function wp_cache_manager() {
 		echo '<strong>Configuration file changed, some values might be wrong. Load the page again from the "Options" menu to reset them.</strong>';
 	}
 
-	echo '<a name="main"></a><fieldset class="options"><legend>Main options</legend>';
+	echo '<a name="main"></a><fieldset class="options"><legend>'.__('Main options','wp-cache').'</legend>';
 	if ( !wp_cache_check_link() ||
 		!wp_cache_verify_config_file() ||
 		!wp_cache_verify_cache_dir() ) {
@@ -222,11 +223,11 @@ function wp_cache_manager() {
 
 	echo '<form name="wp_manager" action="'. $_SERVER["REQUEST_URI"] . '" method="post">';
  	if (wp_cache_is_enabled()) {
-		echo '<strong>WP-Cache is Enabled</strong>';
+		echo '<strong>'.__('WP-Cache is Enabled','wp-cache').'</strong>';
 		echo '<input type="hidden" name="wp_disable" />';
 		echo '<div class="submit"><input type="submit"value="Disable it" /></div>';
 	} else {
-		echo '<strong>WP-Cache is Disabled</strong>';
+		echo '<strong>'.__('WP-Cache is Disabled','wp-cache').'</strong>';
 		echo '<input type="hidden" name="wp_enable" />';
 		echo '<div class="submit"><input type="submit" value="Enable it" /></div>';
 	}
@@ -367,7 +368,7 @@ function wp_cache_edit_accepted() {
 function wp_cache_enable() {
 	global $wp_cache_config_file, $cache_enabled;
 
-	if(get_settings('gzipcompression')) {
+	if(get_option('gzipcompression')) {
 		echo "<b>Error: GZIP compression is enabled, disable it if you want to enable wp-cache.</b><br /><br />";
 		return false;
 	}
@@ -388,7 +389,7 @@ function wp_cache_disable() {
 function wp_cache_is_enabled() {
 	global $wp_cache_config_file;
 
-	if(get_settings('gzipcompression')) {
+	if(get_option('gzipcompression')) {
 		echo "<b>Warning</b>: GZIP compression is enabled in Wordpress, wp-cache will be bypassed until you disable gzip compression.<br />";
 		return false;
 	}

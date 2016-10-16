@@ -2,7 +2,7 @@
 if( !@include(ABSPATH . 'wp-content/wp-cache-config.php') ) {
 	return;
 }
-include(ABSPATH . 'wp-content/plugins/wp-cache/wp-cache-base.php');
+include(ABSPATH . 'wp-content/plugins/wp-cache/includes/wp-cache-base.php');
 
 $mutex_filename = 'wp_cache_mutex.lock';
 $new_cache = false;
@@ -60,7 +60,7 @@ function wp_cache_postload() {
 
 	if (!$cache_enabled) 
 		return;
-	require(ABSPATH . 'wp-content/plugins/wp-cache/wp-cache-phase2.php');
+	require(ABSPATH . 'wp-content/plugins/wp-cache/includes/wp-cache-phase2.php');
 	wp_cache_phase2();
 }
 

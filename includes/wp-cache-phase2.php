@@ -29,7 +29,7 @@ function wp_cache_phase2() {
 		add_action('switch_theme', 'wp_cache_no_postid', 0); 
 	}
 	//$script = basename($_SERVER['SCRIPT_NAME']);
-	if( $_SERVER["REQUEST_METHOD"] == 'POST' || get_settings('gzipcompression')) 
+	if( $_SERVER["REQUEST_METHOD"] == 'POST' || get_option('gzipcompression')) 
 		return;
 	$script = basename($_SERVER['PHP_SELF']);
 	if (!in_array($script, $cache_acceptable_files) && 
@@ -228,7 +228,7 @@ function wp_cache_shutdown_callback() {
 		array_push($wp_cache_meta_object->headers, "Last-Modified: $value");
 	}
 	if (!$response{'Content-Type'} && !$response{'Content-type'}) {
-		$value =  "text/html; charset=" . get_settings('blog_charset'); 
+		$value =  "text/html; charset=" . get_options('blog_charset'); 
 		@header("Content-Type: $value");
 		array_push($wp_cache_meta_object->headers, "Content-Type: $value");
 	}
